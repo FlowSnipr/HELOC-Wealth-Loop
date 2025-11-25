@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary: #0f172a; /* Dark Navy - Authority */
+            --primary-light: #1e293b; /* Lighter Navy for gradient */
             --accent: #16a34a; /* Money Green - Growth */
             --text: #334155;
             --bg: #f8fafc;
@@ -27,52 +28,81 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
+            border-bottom: 5px solid var(--accent);
         }
         h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            line-height: 1.2;
+            line-height: 1.1;
+            font-weight: 800;
         }
         .subhead {
             font-size: 1.2rem;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 20px auto;
+            font-weight: 300;
+        }
+        /* THE BOOK COVER STYLE */
+        .book-cover {
+            max-width: 280px; /* Optimal size for desktop */
+            width: 100%;
+            height: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); /* Deep shadow for 3D effect */
+            margin: 30px auto;
+            display: block;
+            border-radius: 4px; /* Slight rounding if it's a flat image */
+            transform: rotate(-2deg); /* subtle tilt for realism */
+            transition: transform 0.3s ease;
+        }
+        .book-cover:hover {
+            transform: rotate(0deg) scale(1.02); /* Interactive feel */
         }
         .btn {
             display: inline-block;
             background-color: var(--accent);
             color: white;
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 18px 40px;
+            font-size: 1.3rem;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 5px;
-            transition: transform 0.2s;
+            border-radius: 50px; /* Pill shape for modern feel */
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
         }
         .btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.6);
         }
         .section {
-            padding: 40px 20px;
+            padding: 50px 20px;
             border-bottom: 1px solid #e2e8f0;
+        }
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-top: 0;
         }
         .highlight {
             font-weight: bold;
-            color: var(--primary);
-        }
-        .book-cover {
-            max-width: 300px;
-            width: 100%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            margin: 20px 0;
-            transform: rotate(-2deg);
+            color: #b91c1c; /* Red for "Dead Equity" warning */
+            background: #fecaca;
+            padding: 0 4px;
         }
         .cta-section {
             text-align: center;
-            background-color: #e2e8f0;
+            background-color: #f1f5f9;
+        }
+        ul {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        li {
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -80,9 +110,11 @@
 
     <header>
         <div class="container">
-            <h1>The HELOC Wealth Loop</h1>
-            <p class="subhead">How to Turn Dead Home Equity into a Real Estate Empire using DSCR Financing [cite: 1, 2]</p>
-            <br>
+            <h1>THE HELOC WEALTH LOOP</h1>
+            <p class="subhead">How to Turn Dead Home Equity into a Real Estate Empire using DSCR Financing</p>
+            
+            <img src="cover.png" alt="The HELOC Wealth Loop Book Cover" class="book-cover">
+            
             <a href="#" class="btn">Download the Blueprint - $7</a>
         </div>
     </header>
@@ -90,37 +122,37 @@
     <div class="container">
         <div class="section">
             <h2>The Bank's Greatest Lie</h2>
-            <p>You have been lied to. They told you that a paid-off home was the ultimate safety net. But look around. You have the house. You have the credit score. <strong>Do you feel free?</strong> [cite: 18, 22, 24]</p>
+            <p>You have been lied to. They told you that a paid-off home was the ultimate safety net. But look around. You have the house. You have the credit score. <strong>Do you feel free?</strong></p>
             
-            <p>You are likely "House Rich, Cash Poor." You have hundreds of thousands of dollars trapped in your drywall, earning 0% interest, while inflation eats away at your purchasing power. [cite: 27, 26]</p>
+            <p>You are likely "House Rich, Cash Poor." You have hundreds of thousands of dollars trapped in your drywall, earning 0% interest, while inflation eats away at your purchasing power.</p>
             
-            <p>This is called <span class="highlight">Dead Equity</span>. And it is silently killing your net worth. [cite: 49, 52]</p>
+            <p>This is called <span class="highlight">Dead Equity</span>. And it is silently killing your net worth.</p>
         </div>
 
         <div class="section">
             <h2>The Solution: Wake Up Your Money</h2>
-            <p>The wealthy do not pay off their assets; they leverage them. They do not let capital sit idle; they force it to work. [cite: 29, 30]</p>
+            <p>The wealthy do not pay off their assets; they leverage them. They do not let capital sit idle; they force it to work.</p>
             
             <p><strong>The HELOC Wealth Loop</strong> is a strategic framework used by real estate tycoons to:</p>
             <ul>
-                <li><strong>Unlock</strong> the dead equity in your primary home. [cite: 33]</li>
-                <li><strong>Acquire</strong> distressed assets as a "Cash Buyer." [cite: 147]</li>
-                <li><strong>Force Appreciation</strong> through strategic renovation. [cite: 148]</li>
-                <li><strong>Refinance</strong> into a DSCR loan that ignores your personal income. [cite: 149]</li>
+                <li><strong>Unlock</strong> the dead equity in your primary home.</li>
+                <li><strong>Acquire</strong> distressed assets as a "Cash Buyer."</li>
+                <li><strong>Force Appreciation</strong> through strategic renovation.</li>
+                <li><strong>Refinance</strong> into a DSCR loan that ignores your personal income.</li>
             </ul>
         </div>
 
         <div class="section cta-section">
             <h2>Stop Playing Defense. Start Playing Offense.</h2>
-            <p>This book is not for the reckless. It requires discipline, math, and courage. But if you are ready to turn your home into an engine that funds your freedom, the vault is open. [cite: 34, 35, 37]</p>
+            <p>This book is not for the reckless. It requires discipline, math, and courage. But if you are ready to turn your home into an engine that funds your freedom, the vault is open.</p>
             <br>
             <a href="#" class="btn">Get The Guide - $7</a>
             <p><small>Instant PDF Download | Secure Checkout</small></p>
         </div>
         
         <div class="section" style="text-align: center; font-size: 0.8rem; color: #666;">
-            <p>Copyright © 2025 by Arthur West. All rights reserved. [cite: 4]</p>
-            <p>Disclaimer: This book is for educational purposes only. The strategies involve real estate investing and leverage, which carry inherent risks. [cite: 7, 8]</p>
+            <p>Copyright © 2025 by Arthur West / West Strategy Press. All rights reserved.</p>
+            <p>Disclaimer: This book is for educational purposes only. The strategies involve real estate investing and leverage, which carry inherent risks. Consult a financial advisor before borrowing.</p>
         </div>
     </div>
 
