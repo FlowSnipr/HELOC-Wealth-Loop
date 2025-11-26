@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Stress Tester | HELOC Wealth Loop</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --gold: #d4af37;
+            --red: #ef4444;
+            --green: #16a34a;
+            --white: #ffffff;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 22px;
+            margin: 0 0 25px 0;
+            letter-spacing: 1px;
+            grid-column: 1 / -1;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        /* INPUTS */
+        .input-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus { outline: none; border-color: var(--gold); }
+
+        /* SLIDERS */
+        .slider-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+        
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--red);
+            cursor: pointer;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--white);
+        }
+
+        .slider-val { color: var(--red); font-weight: bold; }
+
+        /* RESULTS */
+        .results {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .health-meter {
+            margin-bottom: 30px;
+        }
+
+        .health-value {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .health-label {
+            font-size: 14px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-box {
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .safe { color: var(--green); border: 1px solid var(--green); background: rgba(22, 163, 74, 0.1); }
+        .danger { color: var(--red); border: 1px solid var(--red); background: rgba(239, 68, 68, 0.1); }
+
+        .back-link {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛡️ Portfolio Stress Tester</h1>
+
+        <div class="inputs">
+            <div class="input-group">
+                <label>Total Cash Reserves (SWAN Fund)</label>
+                <input type="number" id="reserves" value="15000" oninput="calculate()">
+            </div>
+            
+            <div class="input-group">
+                <label>Total Monthly Rental Income</label>
+                <input type="number" id="income" value="4000" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label>Total Monthly Debt/Expenses</label>
+                <input type="number" id="expenses" value="3000" oninput="calculate()">
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Simulate Vacancy Loss</span>
+                    <span class="slider-val" id="vacancyDisplay">0%</span>
+                </div>
+                <input type="range" id="vacancy" min="0" max="100" step="5" value="0" oninput="updateSliders()">
+                
+                <div style="margin-top:15px;" class="slider-label">
+                    <span>Simulate Rate Hike (Expense Increase)</span>
+                    <span class="slider-val" id="rateDisplay">0%</span>
+                </div>
+                <input type="range" id="rateHike" min="0" max="50" step="5" value="0" oninput="updateSliders()">
+            </div>
+        </div>
+
+        <div class="results">
+            
+            <div class="health-meter">
+                <div class="health-value" id="monthlyNet">$1,000</div>
+                <div class="health-label">Monthly Net Cash Flow</div>
+            </div>
+
+            <div class="health-meter">
+                <div class="health-value" id="runway">Infinite</div>
+                <div class="health-label">Survival Runway</div>
+            </div>
+
+            <div id="statusBox" class="status-box safe">
+                PORTFOLIO SECURE
+            </div>
+
+            <p style="font-size:12px; color:#64748b; margin-top:20px;">
+                *This tool simulates the impact of income loss (vacancy) and expense spikes (HELOC rates) on your burn rate.
+            </p>
+        </div>
+
+        <a href="index.html" class="back-link">← Return to Vault</a>
+    </div>
+
+    <script>
+        function updateSliders() {
+            const v = document.getElementById('vacancy').value;
+            const r = document.getElementById('rateHike').value;
+            
+            document.getElementById('vacancyDisplay').innerText = "-" + v + "%";
+            document.getElementById('rateDisplay').innerText = "+" + r + "%";
+            
+            calculate();
+        }
+
+        function calculate() {
+            const reserves = parseFloat(document.getElementById('reserves').value) || 0;
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+            
+            const vacancyRate = parseFloat(document.getElementById('vacancy').value) / 100;
+            const rateHike = parseFloat(document.getElementById('rateHike').value) / 100;
+
+            // Apply Stress
+            const stressedIncome = income * (1 - vacancyRate);
+            const stressedExpenses = expenses * (1 + rateHike);
+            
+            const netFlow = stressedIncome - stressedExpenses;
+
+            // Update Net Flow Display
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+            const netDisplay = document.getElementById('monthlyNet');
+            
+            netDisplay.innerText = formatter.format(netFlow);
+            if (netFlow >= 0) {
+                netDisplay.style.color = "#4ade80"; // Green
+            } else {
+                netDisplay.style.color = "#ef4444"; // Red
+            }
+
+            // Calculate Runway
+            const runwayDisplay = document.getElementById('runway');
+            const statusBox = document.getElementById('statusBox');
+
+            if (netFlow >= 0) {
+                runwayDisplay.innerText = "Infinite";
+                runwayDisplay.style.color = "#4ade80";
+                statusBox.className = "status-box safe";
+                statusBox.innerText = "PORTFOLIO STABLE: Cash flow positive.";
+            } else {
+                // Burn Rate logic
+                const burnRate = Math.abs(netFlow);
+                const months = reserves / burnRate;
+                
+                if (months < 3) {
+                    runwayDisplay.innerText = months.toFixed(1) + " Months";
+                    runwayDisplay.style.color = "#ef4444"; // Red
+                    statusBox.className = "status-box danger";
+                    statusBox.innerText = "CRITICAL RISK: Bankruptcy imminent. Increase reserves immediately.";
+                } else if (months < 6) {
+                    runwayDisplay.innerText = months.toFixed(1) + " Months";
+                    runwayDisplay.style.color = "#facc15"; // Yellow
+                    statusBox.className = "status-box";
+                    statusBox.style.color = "#facc15";
+                    statusBox.style.border = "1px solid #facc15";
+                    statusBox.style.background = "rgba(250, 204, 21, 0.1)";
+                    statusBox.innerText = "WARNING: Runway is tight. Monitor closely.";
+                } else {
+                    runwayDisplay.innerText = months.toFixed(1) + " Months";
+                    runwayDisplay.style.color = "#4ade80";
+                    statusBox.className = "status-box safe";
+                    statusBox.innerText = "SECURE: Sufficient reserves for this scenario.";
+                }
+            }
+        }
+
+        calculate();
+    </script>
+
+</body>
+</html>
