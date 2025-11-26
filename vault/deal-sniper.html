@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Sniper MAO Calculator | HELOC Wealth Loop</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --gold: #d4af37;
+            --red: #ef4444; /* For the "Stop" price */
+            --green: #16a34a;
+            --white: #ffffff;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* TARGET RETICLE DECORATION */
+        .reticle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--red);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        .reticle::before, .reticle::after {
+            content: '';
+            position: absolute;
+            background: var(--red);
+        }
+        .reticle::before { top: 18px; left: -5px; width: 46px; height: 2px; }
+        .reticle::after { top: -5px; left: 18px; width: 2px; height: 46px; }
+
+        h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p.subtitle {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        /* FORM SECTIONS */
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: var(--white);
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* TOGGLE SWITCH FOR MARKET HEAT */
+        .toggle-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--gold);
+            color: var(--navy);
+            font-weight: bold;
+        }
+
+        /* REHAB CALCULATOR BOX */
+        .rehab-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed #475569;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .hidden { display: none; }
+
+        /* RESULT DISPLAY */
+        .result-container {
+            margin-top: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--white);
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .warning-text {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .back-link:hover { opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="reticle"></div>
+        
+        <h1>🎯 Deal Sniper</h1>
+        <p class="subtitle">Maximum Allowable Offer (MAO) Calculator</p>
+
+        <div class="form-section">
+            <label>After Repair Value (ARV)</label>
+            <input type="number" id="arv" placeholder="e.g. 250000" oninput="calculateMAO()">
+        </div>
+
+        <div class="form-section">
+            <label>Market Condition</label>
+            <div class="toggle-container">
+                <div class="toggle-btn active" onclick="setMarket(0.70, this)">Normal (70% Rule)</div>
+                <div class="toggle-btn" onclick="setMarket(0.75, this)">Hot Market (75%)</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <label>Rehab Cost Estimation</label>
+            
+            <div style="font-size: 12px; margin-bottom: 10px;">
+                <input type="radio" name="rehabType" id="rehabCalc" checked onclick="toggleRehabInput('calc')"> <label for="rehabCalc" style="display:inline; margin-right: 15px; cursor:pointer;">Use Estimator</label>
+                <input type="radio" name="rehabType" id="rehabManual" onclick="toggleRehabInput('manual')"> <label for="rehabManual" style="display:inline; cursor:pointer;">Manual Entry</label>
+            </div>
+
+            <div id="calcMode" class="rehab-box">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size:11px;">Square Footage</label>
+                        <input type="number" id="sqFt" placeholder="1200" oninput="calculateMAO()">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;">Rehab Level</label>
+                        <select id="rehabLevel" onchange="calculateMAO()">
+                            <option value="20">Light ($20/sf)</option>
+                            <option value="40" selected>Medium ($40/sf)</option>
+                            <option value="70">Heavy ($70/sf)</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:10px; font-size: 12px; color: var(--gold);">
+                    Estimated Cost (w/ 15% Contingency): <span id="calcDisplay">$0</span>
+                </div>
+            </div>
+
+            <div id="manualMode" class="hidden">
+                <input type="number" id="manualRehab" placeholder="Total Contractor Bid" oninput="calculateMAO()">
+            </div>
+        </div>
+
+        <div class="result-container">
+            <div class="result-label">DO NOT OFFER MORE THAN</div>
+            <div class="result-value" id="maoResult">$0</div>
+            <p class="warning-text" id="equityBuffer">Projected Equity Spread: $0</p>
+        </div>
+
+        <a href="index.html" class="back-link">← Return to Vault</a>
+    </div>
+
+    <script>
+        // State Variables
+        let marketFactor = 0.70;
+        let isCalcMode = true;
+
+        // DOM Elements
+        const arvInput = document.getElementById('arv');
+        const sqFtInput = document.getElementById('sqFt');
+        const rehabLevelSelect = document.getElementById('rehabLevel');
+        const manualRehabInput = document.getElementById('manualRehab');
+        const calcDisplay = document.getElementById('calcDisplay');
+        const maoResult = document.getElementById('maoResult');
+        const equityBufferDisplay = document.getElementById('equityBuffer');
+
+        // Formatter
+        const currency = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        });
+
+        function setMarket(factor, btn) {
+            marketFactor = factor;
+            // Visual Toggle
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            calculateMAO();
+        }
+
+        function toggleRehabInput(mode) {
+            const calcBox = document.getElementById('calcMode');
+            const manualBox = document.getElementById('manualMode');
+            
+            if (mode === 'calc') {
+                isCalcMode = true;
+                calcBox.classList.remove('hidden');
+                manualBox.classList.add('hidden');
+            } else {
+                isCalcMode = false;
+                calcBox.classList.add('hidden');
+                manualBox.classList.remove('hidden');
+            }
+            calculateMAO();
+        }
+
+        function calculateMAO() {
+            const arv = parseFloat(arvInput.value) || 0;
+            let totalRehab = 0;
+
+            // 1. Calculate Rehab
+            if (isCalcMode) {
+                const sqFt = parseFloat(sqFtInput.value) || 0;
+                const costPerSqFt = parseFloat(rehabLevelSelect.value);
+                
+                const baseRehab = sqFt * costPerSqFt;
+                const contingency = baseRehab * 0.15; // 15% Oh Sh*t Fund
+                totalRehab = baseRehab + contingency;
+                
+                calcDisplay.innerText = currency.format(totalRehab);
+            } else {
+                totalRehab = parseFloat(manualRehabInput.value) || 0;
+            }
+
+            // 2. Calculate MAO Formula: (ARV * MarketFactor) - Rehab
+            let mao = (arv * marketFactor) - totalRehab;
+
+            // 3. Calculate Projected Spread (What the bank sees)
+            // Spread = ARV - Total All In Cost (MAO + Rehab)
+            // Actually, Spread = ARV - Loan Amount (approx). 
+            // Let's show Gross Equity: ARV - (Purchase + Rehab)
+            // If we buy at MAO, Purchase = MAO.
+            // So Cost = MAO + Rehab.
+            // Cost = ((ARV * .7) - Rehab) + Rehab = ARV * .7
+            // So Equity = ARV - (ARV * .7) = 30% of ARV. 
+            
+            const projectedEquity = arv - (mao + totalRehab);
+
+            // Display
+            if (mao < 0) mao = 0;
+            
+            maoResult.innerText = currency.format(mao);
+            
+            if (arv > 0) {
+                equityBufferDisplay.innerText = `Locked-in Equity (Day 1): ${currency.format(projectedEquity)}`;
+            } else {
+                equityBufferDisplay.innerText = "Enter ARV to see projected equity";
+            }
+        }
+    </script>
+</body>
+</html>
