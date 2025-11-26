@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOW Generator | HELOC Wealth Loop</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --gray: #94a3b8;
+            --paper: #f8fafc;
+            --text-dark: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .main-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* LEFT COLUMN: CONTROLS */
+        .controls-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 22px;
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        .section-header {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--gold);
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .detail-text {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%);
+            color: var(--navy);
+            text-align: center;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 6px;
+            margin-top: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* RIGHT COLUMN: PREVIEW */
+        .preview-container {
+            background: var(--paper);
+            color: var(--text-dark);
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            min-height: 600px;
+            font-family: 'Times New Roman', serif;
+            position: relative;
+        }
+
+        .doc-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .doc-header h2 {
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .doc-body {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .doc-section {
+            margin-bottom: 20px;
+        }
+
+        .doc-section-title {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 8px;
+        }
+
+        .doc-item {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .doc-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+
+        .signature-block {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .sig-line {
+            width: 45%;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            font-size: 12px;
+        }
+
+        .print-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .main-wrapper { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="controls-container">
+            <h1>🔨 SOW Generator</h1>
+            <p style="font-size:13px; color:var(--gray);">Select the standard "Wealth Loop" finishes below. This generates a binding attachment for your contractor agreement.</p>
+
+            <div class="section-header">General / Interior</div>
+            
+            <div class="input-group">
+                <input type="checkbox" id="paint" checked onchange="updateDoc()">
+                <label for="paint">
+                    Full Interior Paint
+                    <span class="detail-text">Standard: Sherwin Williams "Agreeable Gray" (Walls) / Semi-Gloss White (Trim)</span>
+                </label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="flooring" checked onchange="updateDoc()">
+                <label for="flooring">
+                    LVP Flooring (No Carpet)
+                    <span class="detail-text">Standard: Waterproof LVP "Oak/Hickory" tone.</span>
+                </label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="blinds" onchange="updateDoc()">
+                <label for="blinds">Window Treatments <span class="detail-text">2" Faux Wood Cordless Blinds (White)</span></label>
+            </div>
+
+            <div class="section-header">Kitchen Renovation</div>
+
+            <div class="input-group">
+                <input type="checkbox" id="cabinets" checked onchange="updateDoc()">
+                <label for="cabinets">New Cabinetry <span class="detail-text">Shaker Style (White), Soft-close hinges.</span></label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="counters" checked onchange="updateDoc()">
+                <label for="counters">Countertops <span class="detail-text">Level 1 Granite or Quartz (Arctic White).</span></label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="plumbing_k" checked onchange="updateDoc()">
+                <label for="plumbing_k">Kitchen Fixtures <span class="detail-text">Stainless drop-in sink, Brushed Nickel pull-down faucet.</span></label>
+            </div>
+
+            <div class="section-header">Bathroom Refresh</div>
+
+            <div class="input-group">
+                <input type="checkbox" id="vanity" onchange="updateDoc()">
+                <label for="vanity">Vanity & Mirror <span class="detail-text">White vanity, cultured marble top, brushed nickel light bar.</span></label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="toilet" onchange="updateDoc()">
+                <label for="toilet">Toilet Replacement <span class="detail-text">Elongated bowl, comfort height.</span></label>
+            </div>
+
+            <div class="section-header">Systems / Exterior</div>
+
+            <div class="input-group">
+                <input type="checkbox" id="roof" onchange="updateDoc()">
+                <label for="roof">Roof Repair/Replace</label>
+            </div>
+            
+            <div class="input-group">
+                <input type="checkbox" id="hvac" onchange="updateDoc()">
+                <label for="hvac">HVAC Service/Replace</label>
+            </div>
+
+            <div class="input-group">
+                <input type="checkbox" id="clean" checked onchange="updateDoc()">
+                <label for="clean">Final Clean <span class="detail-text">"Hotel Ready" Deep Clean.</span></label>
+            </div>
+
+            <a href="index.html" class="back-link">← Return to Vault</a>
+        </div>
+
+        <div class="preview-container" id="printArea">
+            <button class="print-btn" onclick="printSOW()">Print / Save PDF</button>
+            
+            <div class="doc-header">
+                <h2>Exhibit A: Scope of Work</h2>
+                <p>Property Address: _______________________</p>
+            </div>
+
+            <div class="doc-body" id="docContent">
+                </div>
+
+            <div style="margin-top: 30px; font-size: 12px; font-style:italic;">
+                *Note to Contractor: All Change Orders must be submitted in writing and approved prior to execution. No verbal changes will be paid.
+            </div>
+
+            <div class="signature-block">
+                <div class="sig-line">Owner Signature</div>
+                <div class="sig-line">Contractor Signature</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const contentMap = {
+            'paint': {
+                title: 'Interior Painting',
+                text: 'Apply 2 coats of Sherwin Williams "Agreeable Gray" (Flat/Eggshell) to all walls. Apply Semi-Gloss Bright White to all trim, doors, and baseboards. Patch all nail holes prior to painting.'
+            },
+            'flooring': {
+                title: 'Flooring Installation',
+                text: 'Remove existing carpet/tile. Install Luxury Vinyl Plank (LVP) throughout designated areas. Color: Oak/Hickory. Install matching quarter-round molding.'
+            },
+            'blinds': {
+                title: 'Window Treatments',
+                text: 'Install 2-inch Faux Wood Cordless Blinds (White) in all bedroom and living area windows.'
+            },
+            'cabinets': {
+                title: 'Kitchen Cabinetry',
+                text: 'Install White Shaker-style cabinets. Plywood box construction preferred. Include soft-close hinges and brushed nickel hardware.'
+            },
+            'counters': {
+                title: 'Countertops',
+                text: 'Install Level 1 Granite or Quartz (White/Gray speckle). Include 4-inch backsplash or full subway tile splash (see below).'
+            },
+            'plumbing_k': {
+                title: 'Kitchen Plumbing Fixtures',
+                text: 'Install double-basin stainless steel drop-in sink. Install single-handle pull-down faucet (Brushed Nickel).'
+            },
+            'vanity': {
+                title: 'Bathroom Vanity',
+                text: 'Install new vanity cabinet with cultured marble top. Replace mirror with frameless or brushed nickel framed mirror. Replace vanity light bar (Brushed Nickel).'
+            },
+            'toilet': {
+                title: 'Toilet Installation',
+                text: 'Install new White Elongated Bowl Toilet. Include new wax ring, bolts, and supply line.'
+            },
+            'roof': {
+                title: 'Roofing',
+                text: 'Inspect and repair roof leaks OR Complete tear-off and replacement with architectural shingles (Color: Weathered Wood/Charcoal).'
+            },
+            'hvac': {
+                title: 'HVAC',
+                text: 'Service existing unit, replace filter, and verify temperature delta. OR Install new condenser and air handler.'
+            },
+            'clean': {
+                title: 'Final Cleaning',
+                text: 'Remove all construction debris. Deep clean all floors, wipe down inside/outside of cabinets, clean windows, and sanitize bathrooms.'
+            }
+        };
+
+        function updateDoc() {
+            const docContent = document.getElementById('docContent');
+            docContent.innerHTML = ''; // Clear current
+
+            // Order matters - strictly follows the DOM order of IDs
+            const ids = ['paint', 'flooring', 'blinds', 'cabinets', 'counters', 'plumbing_k', 'vanity', 'toilet', 'roof', 'hvac', 'clean'];
+
+            ids.forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox && checkbox.checked) {
+                    const data = contentMap[id];
+                    
+                    const section = document.createElement('div');
+                    section.className = 'doc-section';
+                    
+                    const title = document.createElement('div');
+                    title.className = 'doc-section-title';
+                    title.innerText = data.title;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'doc-item';
+                    item.innerText = data.text;
+
+                    section.appendChild(title);
+                    section.appendChild(item);
+                    docContent.appendChild(section);
+                }
+            });
+        }
+
+        function printSOW() {
+            const printContents = document.getElementById('printArea').innerHTML;
+            const originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            // Re-attach listeners after nuking DOM (simple reload might be safer but this works for single page app feel)
+            location.reload(); 
+        }
+
+        // Initialize
+        updateDoc();
+    </script>
+</body>
+</html>
