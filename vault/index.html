@@ -32,8 +32,7 @@
 
         /* HEADER SECTION */
         header {
-            text-align: center;
-            padding: 40px 20px 60px;
+            padding: 30px 20px 60px; /* Reduced top padding */
             /* Matches Landing Page Gradient */
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-bottom: 5px solid var(--accent);
@@ -41,46 +40,55 @@
             position: relative;
         }
 
+        /* NEW HEADER LAYOUT (THE FIX) */
         .header-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            display: flex; /* Aligns items side-by-side */
+            align-items: center; /* Vertically centers them */
+            justify-content: center; /* Horizontally centers the group */
+            gap: 25px; /* Space between logo and text */
+            text-align: left; /* Text aligns left relative to logo */
         }
 
-        /* LOGO INTEGRATION */
+        /* UPDATED LOGO STYLE */
         .logo-img {
-            width: 120px; /* Sleek size */
+            width: 90px; /* Larger, robust size */
             height: auto;
             display: block;
-            margin: 0 auto 20px;
-            /* subtle glow to make the gold pop on navy */
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3)); 
+            /* Remove bottom margin since it's now side-by-side */
+            margin: 0; 
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4)); 
             transition: transform 0.3s ease;
         }
         
         .logo-img:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(-5deg);
         }
 
-        h1 {
+        .header-text h1 {
             color: white;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
             font-size: 2.2rem;
             font-weight: 800;
+            line-height: 1; /* Tighter line height for header lockup */
         }
 
-        p.subtitle {
-            color: #cbd5e1; /* Light gray text for dark background */
-            margin-top: 10px;
-            font-size: 1.1rem;
+        .header-text .subtitle {
+            color: #cbd5e1;
+            margin-top: 5px;
+            font-size: 1rem;
             font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         /* MAIN CONTAINER */
         .container {
             max-width: 1000px;
-            margin: -40px auto 0; /* Overlap header slightly for depth */
+            margin: -40px auto 0;
             padding: 0 20px 40px;
             position: relative;
             z-index: 10;
@@ -90,7 +98,7 @@
         h2.section-title {
             color: var(--primary);
             font-size: 1.2rem;
-            border-left: 4px solid var(--accent); /* Green Accent */
+            border-left: 4px solid var(--accent);
             padding-left: 15px;
             margin: 40px 0 20px 0;
             text-transform: uppercase;
@@ -105,14 +113,14 @@
             gap: 25px;
         }
 
-        /* CARD STYLES (Clean White) */
+        /* CARD STYLES */
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -127,7 +135,7 @@
         .card-icon {
             font-size: 32px;
             margin-bottom: 15px;
-            color: var(--gold); /* Keep Icons Gold to tie in Logo */
+            color: var(--gold);
         }
 
         .card h3 {
@@ -144,14 +152,14 @@
             line-height: 1.6;
         }
 
-        /* ACTION BUTTONS (Green Pill) */
+        /* ACTION BUTTONS */
         .action-btn {
             display: inline-block;
             background-color: var(--accent);
             color: white;
             text-decoration: none;
             padding: 12px 25px;
-            border-radius: 50px; /* Pill Shape matches LP */
+            border-radius: 50px;
             font-weight: 700;
             text-align: center;
             font-size: 0.95rem;
@@ -228,7 +236,7 @@
         /* DOWNLOAD BOX */
         .download-box {
             text-align: center;
-            background: #f0fdf4; /* Very light green tint */
+            background: #f0fdf4;
             border: 2px dashed var(--accent);
             padding: 40px;
             border-radius: 12px;
@@ -246,12 +254,18 @@
 
         .footer a { color: var(--text); text-decoration: none; }
 
+        /* MOBILE RESPONSIVE TWEAKS */
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
+            .header-content {
+                flex-direction: column; /* Stack logo on top of text for mobile */
+                text-align: center;
+                gap: 15px;
+            }
+            .header-text h1 { font-size: 1.8rem; }
             .tools-grid { grid-template-columns: 1fr; }
             .link-list li { flex-direction: column; align-items: flex-start; gap: 10px; }
             .link-btn { width: 100%; text-align: center; box-sizing: border-box; }
-            .logo-img { width: 100px; }
+            .logo-img { width: 80px; } /* Slightly smaller on mobile */
         }
     </style>
 </head>
@@ -261,8 +275,10 @@
         <div class="header-content">
             <img src="../HELOC Logo.PNG" alt="HELOC Wealth Loop Logo" class="logo-img">
             
-            <h1>The Wealth Loop Vault</h1>
-            <p class="subtitle">Authorized Access Only</p>
+            <div class="header-text">
+                <h1>The Wealth Loop Vault</h1>
+                <p class="subtitle">Authorized Access Only</p>
+            </div>
         </div>
     </header>
 
