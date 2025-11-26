@@ -6,296 +6,325 @@
     <title>The Resource Vault | HELOC Wealth Loop</title>
     <style>
         :root {
-            --primary: #0f172a;
-            --accent: #16a34a;
-            --text: #334155;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
+            --navy: #0f172a;      /* Deep Navy Background */
+            --gold: #d4af37;      /* Metallic Gold */
+            --gold-dim: #aa8c2c;  /* Darker Gold for hover states */
+            --white: #ffffff;
+            --gray: #94a3b8;      /* Slate Gray for subtitles */
+            --card-bg: rgba(255, 255, 255, 0.03); /* Glassmorphism effect */
+            --border: rgba(212, 175, 55, 0.2);
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
             margin: 0;
             padding: 0;
-            background-color: var(--bg);
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--accent);
-        }
-        h1 { margin: 0; font-size: 2.2rem; }
-        h2 { color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 50px; }
-        
-        /* CARD STYLES */
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid #e2e8f0;
+            line-height: 1.6;
         }
 
-        /* CALCULATOR STYLES */
-        .calc-grid {
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(15,23,42,1) 0%, rgba(30,41,59,0) 100%);
+        }
+
+        h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        p.subtitle {
+            color: var(--gray);
+            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* SECTION HEADERS */
+        h2.section-title {
+            color: var(--white);
+            font-size: 1.2rem;
+            border-left: 4px solid var(--gold);
+            padding-left: 15px;
+            margin: 40px 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* GRID LAYOUTS */
+        .tools-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box; 
-        }
-        .result-box {
-            background: #f0fdf4;
-            border: 2px solid var(--accent);
-            color: var(--primary);
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .result-val { font-size: 2rem; font-weight: 800; color: var(--accent); }
-        .calc-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            width: 100%;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .calc-btn:hover { background: #1e293b; }
 
-        /* LINK LISTS (UPDATED FOR CONTRAST) */
-        .link-list { list-style: none; padding: 0; }
-        .link-list li {
-            background: #f8fafc; /* Lighter background */
+        /* CARD STYLES */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-icon {
+            font-size: 32px;
             margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
+            color: var(--gold);
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.25rem;
+            color: var(--white);
+        }
+
+        .card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin: 0 0 20px 0;
+        }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+            color: var(--navy);
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* STATUS TAGS */
+        .status {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .status.active { background: rgba(212, 175, 55, 0.2); color: var(--gold); }
+        .status.soon { background: rgba(148, 163, 184, 0.2); color: var(--gray); }
+
+        /* LINK LISTS (FOR LENDERS) */
+        .link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .link-list li {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #e2e8f0; /* Subtle border definition */
-        }
-        .link-list a {
-            color: var(--accent);
-            font-weight: bold;
-            text-decoration: none;
-            border: 1px solid var(--accent);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-        .link-list a:hover {
-            background-color: var(--accent);
-            color: white;
-        }
-        
-        /* UPDATED DESCRIPTION TEXT COLOR */
-        .link-list span { 
-            font-size: 0.95rem; 
-            color: #334155; /* Darker Slate for better readability */
-            display: block;
-            margin-top: 4px;
-        }
-        
-        /* UPDATED TAG STYLE (THE FIX) */
-        .tag {
-            background: #dcfce7; /* Light Mint Green Background */
-            color: #15803d;      /* Dark Green Text - HIGH CONTRAST */
-            padding: 4px 10px;
-            border-radius: 99px; /* Pill Shape */
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-left: 10px;
-            letter-spacing: 0.5px;
-            vertical-align: middle;
         }
 
-        /* DOWNLOAD SECTION */
-        .download-btn {
+        .link-list li:last-child { border-bottom: none; }
+
+        .lender-name {
+            font-weight: 700;
+            color: var(--white);
             display: block;
-            width: 100%;
-            text-align: center;
-            background: var(--accent);
-            color: white;
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-top: 20px;
         }
-        .download-btn:hover { background: #15803d; }
-        
+
+        .lender-desc {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .link-btn {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .link-btn:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        /* DOWNLOAD BOX */
+        .download-box {
+            text-align: center;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px dashed var(--gold);
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #475569;
+            font-size: 0.8rem;
+        }
+
+        .footer a { color: #64748b; text-decoration: none; }
+
         @media (max-width: 600px) {
-            .calc-grid { grid-template-columns: 1fr; }
-            .link-list li { flex-direction: column; align-items: flex-start; }
-            .link-list a { margin-top: 15px; display: inline-block; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .link-list li { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .link-btn { width: 100%; text-align: center; box-sizing: border-box; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="container">
+        <div class="container" style="padding:0;">
             <h1>The Wealth Loop Vault</h1>
-            <p>Authorized Access Only</p>
+            <p class="subtitle">Authorized Access Only</p>
         </div>
     </header>
 
     <div class="container">
 
-        <div class="card">
-            <h2 style="margin-top:0;">Step 1: Calculate Your Gunpowder</h2>
-            <p>Use this tool to determine exactly how much liquidity you can unlock from your primary home.</p>
+        <h2 class="section-title">Your Strategy Tools</h2>
+        <div class="tools-grid">
             
-            <div class="calc-grid">
-                <div class="input-group">
-                    <label>Current Home Value ($)</label>
-                    <input type="number" id="homeValue" placeholder="e.g. 500000">
+            <div class="card">
+                <div>
+                    <div class="card-icon">⚡</div>
+                    <h3>Dry Powder Visualizer</h3>
+                    <p>Calculate your available equity instantly. Stop guessing and see exactly how much capital is trapped in your walls.</p>
                 </div>
-                <div class="input-group">
-                    <label>Bank Max LTV (%)</label>
-                    <input type="number" id="ltv" placeholder="e.g. 85" value="85">
-                </div>
-                <div class="input-group">
-                    <label>Current Mortgage Balance ($)</label>
-                    <input type="number" id="mortgage" placeholder="e.g. 250000">
-                </div>
-                <div class="input-group" style="display:flex; align-items:flex-end;">
-                    <button class="calc-btn" onclick="calculateGunpowder()">Run Calculation</button>
-                </div>
+                <div><a href="dry-powder.html" class="action-btn">Launch Tool &rarr;</a></div>
             </div>
 
-            <div class="result-box">
-                <div>Available Gunpowder</div>
-                <div class="result-val" id="result">$0.00</div>
+            <div class="card" style="opacity: 0.7;">
+                <div>
+                    <div class="card-icon">🎯</div>
+                    <h3>Deal Sniper MAO</h3>
+                    <p>Calculate your Maximum Allowable Offer. Never overpay for a property again.</p>
+                </div>
+                <div><span class="status soon">Coming Soon</span></div>
+            </div>
+
+            <div class="card" style="opacity: 0.7;">
+                <div>
+                    <div class="card-icon">🔨</div>
+                    <h3>SOW Generator</h3>
+                    <p>Create bulletproof contractor scopes of work to prevent change orders.</p>
+                </div>
+                <div><span class="status soon">Coming Soon</span></div>
             </div>
         </div>
 
-        <h2>Step 2: Secure The Line (HELOCs)</h2>
-        <div class="card">
-            <ul class="link-list">
-                <li>
-                    <div>
-                        <strong>Figure</strong> <span class="tag">Fastest</span><br>
-                        <span>Approvals in minutes, funding in 5 days.</span>
-                    </div>
-                    <a href="#" target="_blank">Apply Now &rarr;</a>
-                </li>
-                <li>
-                    <div>
-                        <strong>Hitch</strong> <span class="tag">Investor Friendly</span><br>
-                        <span>Designed specifically for real estate strategies.</span>
-                    </div>
-                    <a href="#" target="_blank">Apply Now &rarr;</a>
-                </li>
-                <li>
-                    <div>
-                        <strong>Spring EQ</strong> <span class="tag">High LTV</span><br>
-                        <span>Often allows up to 90-95% Loan-to-Value.</span>
-                    </div>
-                    <a href="#" target="_blank">Apply Now &rarr;</a>
-                </li>
-            </ul>
-        </div>
-
-        <h2>Step 3: The Escape Hatch (DSCR Loans)</h2>
-        <div class="card">
-            <ul class="link-list">
-                <li>
-                    <div>
-                        <strong>Kiavi</strong> <span class="tag">Speed</span><br>
-                        <span>Tech-enabled lender, great for BRRRR seasoning.</span>
-                    </div>
-                    <a href="https://www.kiavi.com" target="_blank">Visit Site &rarr;</a>
-                </li>
-                <li>
-                    <div>
-                        <strong>Easy Street Capital</strong> <span class="tag">Short Seasoning</span><br>
-                        <span>Ask for the "Easy Rent" program.</span>
-                    </div>
-                    <a href="https://www.easystreetcap.com" target="_blank">Visit Site &rarr;</a>
-                </li>
-                <li>
-                    <div>
-                        <strong>Lima One Capital</strong> <span class="tag">Scaling</span><br>
-                        <span>Ideal for portfolios of 5+ properties.</span>
-                    </div>
-                    <a href="https://www.limaone.com" target="_blank">Visit Site &rarr;</a>
-                </li>
-            </ul>
-        </div>
-
-        <h2>Step 4: Download The Files</h2>
-        <div class="card" style="text-align: center;">
-            <p>Access the offline Excel Calculator, the <strong>Perfect Lease Template</strong>, and the lender PDFs below.</p>
+        <h2 class="section-title">The Lender Rolodex</h2>
+        <div class="tools-grid">
             
-            <a href="PASTE_YOUR_GOOGLE_DRIVE_LINK_HERE" class="download-btn" target="_blank">
-                Access Google Drive Folder
-            </a>
-            
-            <p><small>Contains: Excel Sheet, Word Doc Lease, PDF Rolodex</small></p>
+            <div class="card">
+                <h3>Phase 1: Secure The Line (HELOCs)</h3>
+                <ul class="link-list">
+                    <li>
+                        <div>
+                            <span class="lender-name">Figure</span>
+                            <span class="lender-desc">Fastest Approval (5 Days)</span>
+                        </div>
+                        <a href="#" class="link-btn">Apply</a>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="lender-name">Hitch</span>
+                            <span class="lender-desc">Investor Friendly</span>
+                        </div>
+                        <a href="#" class="link-btn">Apply</a>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="lender-name">Spring EQ</span>
+                            <span class="lender-desc">High LTV (up to 95%)</span>
+                        </div>
+                        <a href="#" class="link-btn">Apply</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Phase 3: The Escape Hatch (DSCR)</h3>
+                <ul class="link-list">
+                    <li>
+                        <div>
+                            <span class="lender-name">Kiavi</span>
+                            <span class="lender-desc">Best Tech & Speed</span>
+                        </div>
+                        <a href="https://www.kiavi.com" target="_blank" class="link-btn">Visit</a>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="lender-name">Easy Street Capital</span>
+                            <span class="lender-desc">Short Seasoning (3 Months)</span>
+                        </div>
+                        <a href="https://www.easystreetcap.com" target="_blank" class="link-btn">Visit</a>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="lender-name">Lima One</span>
+                            <span class="lender-desc">Portfolio Scaling</span>
+                        </div>
+                        <a href="https://www.limaone.com" target="_blank" class="link-btn">Visit</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <div style="text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 40px;">
-            <p>Copyright © 2025 West Strategy Press. <a href="/" style="color:#94a3b8;">Back to Home</a></p>
+        <div class="download-box">
+            <h3 style="color:var(--gold); margin-top:0;">Offline Assets</h3>
+            <p>Download the Excel Calculator, The Perfect Lease Template, and the Lender PDF Rolodex.</p>
+            <a href="PASTE_YOUR_GOOGLE_DRIVE_LINK_HERE" class="action-btn" target="_blank">Access Google Drive Folder</a>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Arthur West / West Strategy Press. <br>
+            <a href="/">Back to Main Site</a>
         </div>
 
     </div>
-
-    <script>
-        function calculateGunpowder() {
-            // Get values
-            const homeValue = parseFloat(document.getElementById('homeValue').value) || 0;
-            const ltv = parseFloat(document.getElementById('ltv').value) || 0;
-            const mortgage = parseFloat(document.getElementById('mortgage').value) || 0;
-
-            // Math: (Value * (LTV/100)) - Mortgage
-            const maxLoan = homeValue * (ltv / 100);
-            const gunpowder = maxLoan - mortgage;
-
-            // Formatting currency
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-            });
-
-            // Display
-            const resultElement = document.getElementById('result');
-            
-            if (gunpowder < 0) {
-                resultElement.innerHTML = formatter.format(0);
-                resultElement.style.color = '#ef4444'; // Red if negative
-            } else {
-                resultElement.innerHTML = formatter.format(gunpowder);
-                resultElement.style.color = '#16a34a'; // Green if positive
-            }
-        }
-    </script>
 
 </body>
 </html>
