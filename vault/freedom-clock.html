@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Freedom Clock | HELOC Wealth Loop</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --gray: #94a3b8;
+            --green: #16a34a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* LEFT: CONTROLS */
+        .controls h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 24px;
+            margin: 0 0 30px 0;
+            letter-spacing: 1px;
+        }
+
+        .input-group { margin-bottom: 25px; }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            box-sizing: border-box;
+            font-weight: bold;
+        }
+
+        input:focus { outline: none; border-color: var(--gold); }
+
+        /* SLIDER STYLE */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            margin-top: -8px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 2px;
+        }
+
+        .slider-val {
+            float: right;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        /* RIGHT: RESULTS */
+        .results {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid #334155;
+        }
+
+        .big-stat {
+            margin-bottom: 30px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .highlight-gold { color: var(--gold); text-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+        
+        .timeline-box {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .results { margin-top: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="controls">
+            <h1>⏳ Freedom Clock</h1>
+            
+            <div class="input-group">
+                <label>Monthly "Freedom Number" ($) <span style="font-weight:normal; text-transform:none; color:#64748b;">(Cost of living)</span></label>
+                <input type="number" id="targetIncome" value="10000" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label>Avg. Cash Flow Per Door ($)</label>
+                <input type="number" id="cashFlow" value="400" oninput="calculate()">
+            </div>
+
+            <div class="input-group">
+                <label>Velocity: Loops Per Year <span class="slider-val" id="velocityDisplay">2 Loops/Yr</span></label>
+                <br>
+                <input type="range" id="velocity" min="1" max="6" step="1" value="2" oninput="updateVelocity()">
+            </div>
+        </div>
+
+        <div class="results">
+            <div class="big-stat">
+                <div class="stat-label">Empire Size Needed</div>
+                <div class="stat-value highlight-gold" id="doorsNeeded">25 Doors</div>
+            </div>
+
+            <div class="big-stat">
+                <div class="stat-label">Total Portfolio Value</div>
+                <div class="stat-value" id="portfolioValue">$5.0M</div>
+            </div>
+
+            <div class="timeline-box">
+                <div class="stat-label">Time to Freedom</div>
+                <div class="stat-value" id="yearsToFreedom" style="font-size: 32px; color: #4ade80;">12.5 Years</div>
+                <p style="font-size: 12px; color: #94a3b8; margin-top: 10px;">
+                    (Based on your velocity of <span id="loopText">2</span> loops/year)
+                </p>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← Return to Vault</a>
+
+    </div>
+
+    <script>
+        function updateVelocity() {
+            const v = document.getElementById('velocity').value;
+            document.getElementById('velocityDisplay').innerText = v + " Loops/Yr";
+            document.getElementById('loopText').innerText = v;
+            calculate();
+        }
+
+        function calculate() {
+            // 1. Get Inputs
+            const target = parseFloat(document.getElementById('targetIncome').value) || 0;
+            const cashFlow = parseFloat(document.getElementById('cashFlow').value) || 1; // Prevent div by zero
+            const velocity = parseFloat(document.getElementById('velocity').value);
+
+            // 2. Calculate Doors
+            // Doors = Target / CashFlow
+            let doors = Math.ceil(target / cashFlow);
+            if (doors < 0) doors = 0;
+
+            // 3. Calculate Portfolio Value (Estimate)
+            // Assume avg house is $200k (Chapter 8 Model)
+            const avgHousePrice = 200000;
+            let totalValue = doors * avgHousePrice;
+
+            // 4. Calculate Time
+            // Years = Doors / Velocity
+            let years = doors / velocity;
+
+            // 5. Update UI
+            document.getElementById('doorsNeeded').innerText = doors + " Doors";
+            
+            // Format Currency for Value
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 1,
+                notation: "compact"
+            });
+            document.getElementById('portfolioValue').innerText = formatter.format(totalValue);
+
+            // Format Years
+            if (years < 1) {
+                document.getElementById('yearsToFreedom').innerText = "< 1 Year";
+            } else {
+                document.getElementById('yearsToFreedom').innerText = years.toFixed(1) + " Years";
+            }
+        }
+
+        // Init
+        calculate();
+    </script>
+
+</body>
+</html>
