@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSCR Lease Builder | HELOC Wealth Loop</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --gray: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --green: #16a34a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        /* INPUT SECTION */
+        .input-box {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input:focus { outline: none; border-color: var(--gold); }
+
+        /* RESULT SECTION */
+        .result-box {
+            background: #fff;
+            color: #1e293b;
+            border-radius: 4px;
+            padding: 30px;
+            font-family: 'Times New Roman', serif;
+            position: relative;
+        }
+
+        .clause-title {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .clause-text {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background-color: #fef3c7;
+            padding: 2px 5px;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            display: block;
+            width: 100%;
+            background: var(--green);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Segoe UI', sans-serif;
+            margin-top: 20px;
+        }
+
+        .copy-btn:hover { background: #15803d; }
+
+        .explainer {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 20px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .back-link {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="input-box">
+            <h1>📝 Lease Structurer</h1>
+            
+            <div class="form-group">
+                <label>Target Base Rent ($)</label>
+                <input type="number" id="baseRent" placeholder="e.g. 1500" oninput="updateClause()">
+            </div>
+
+            <div class="form-group">
+                <label>Monthly Pet Rent ($)</label>
+                <input type="number" id="petRent" placeholder="e.g. 50" oninput="updateClause()">
+            </div>
+
+            <div class="form-group">
+                <label>Parking / Garage Fee ($)</label>
+                <input type="number" id="parkingFee" placeholder="e.g. 50" oninput="updateClause()">
+            </div>
+
+            <div class="form-group">
+                <label>Tech / Amenity Fee ($)</label>
+                <input type="number" id="techFee" placeholder="e.g. 30" oninput="updateClause()">
+            </div>
+
+            <div class="explainer">
+                <strong>Why do this?</strong> Lenders calculate DSCR based on "Gross Rent." If you list fees separately, many lenders ignore them. Rolling them into one number maximizes your loan approval odds.
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="clause-title">LEASE AGREEMENT: RENT CLAUSE</div>
+            
+            <div class="clause-text">
+                <strong>1. RENT:</strong> Tenant agrees to pay Landlord the total sum of <span class="highlight" id="totalRent">$0.00</span> per month as Base Rent.
+            </div>
+
+            <div class="clause-text">
+                <strong>2. INCLUSIONS:</strong> The Base Rent stated above is inclusive of the following services and privileges:
+                <ul id="inclusionList" style="margin-top:5px; padding-left:20px;">
+                    <li>Standard Residential Usage</li>
+                </ul>
+            </div>
+
+            <button class="copy-btn" onclick="copyText()">Copy Clause to Clipboard</button>
+        </div>
+
+        <a href="index.html" class="back-link">← Return to Vault</a>
+
+    </div>
+
+    <script>
+        function updateClause() {
+            // 1. Get Values
+            const base = parseFloat(document.getElementById('baseRent').value) || 0;
+            const pet = parseFloat(document.getElementById('petRent').value) || 0;
+            const parking = parseFloat(document.getElementById('parkingFee').value) || 0;
+            const tech = parseFloat(document.getElementById('techFee').value) || 0;
+
+            // 2. Calculate Total
+            const total = base + pet + parking + tech;
+
+            // 3. Update Display
+            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+            document.getElementById('totalRent').innerText = formatter.format(total);
+
+            // 4. Update List
+            const list = document.getElementById('inclusionList');
+            list.innerHTML = '<li>Standard Residential Usage</li>'; // Reset
+
+            if (pet > 0) {
+                const li = document.createElement('li');
+                li.innerText = `Pet Privilege Fee (Value: ${formatter.format(pet)})`;
+                list.appendChild(li);
+            }
+            if (parking > 0) {
+                const li = document.createElement('li');
+                li.innerText = `Reserved Parking/Garage Access (Value: ${formatter.format(parking)})`;
+                list.appendChild(li);
+            }
+            if (tech > 0) {
+                const li = document.createElement('li');
+                li.innerText = `Technology/Amenity Package (Value: ${formatter.format(tech)})`;
+                list.appendChild(li);
+            }
+        }
+
+        function copyText() {
+            const text = document.querySelector('.result-box').innerText;
+            navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = "Copied!";
+            setTimeout(() => { btn.innerText = "Copy Clause to Clipboard"; }, 2000);
+        }
+    </script>
+
+</body>
+</html>
